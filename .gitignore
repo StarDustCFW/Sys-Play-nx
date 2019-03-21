@@ -1,0 +1,8 @@
+
+build/*
+*.cmd
+*.nsp
+sd_card/atmosphere
+*.elf
+*.npdm
+*.nso
