@@ -8,7 +8,8 @@ Teclas de acceso rápido: L R X detiene y reproduce música, R3 L3 cierra el ser
 
 es un beta
 
-** tocará consecutivamente una selección de música, **
+* Tocará consecutivamente una selección de música, *
+
 Esto debera estar ubicado en:
 
 módulos / música / fondo.mp3
@@ -31,7 +32,7 @@ Hotkeys: L R X stop and play music, R3 L3 close the servise to the next restart 
 
 is a beta 
 
-** will play consecutively a selection of music, **
+* will play consecutively a selection of music, 
 
 this should be located in:
 
