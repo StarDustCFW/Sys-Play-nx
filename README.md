@@ -43,3 +43,13 @@ modules/music/fondo1.mp3
 (...)
 
 modules/music/fondo5.mp3
+
+# Credits
+
+https://github.com/DavidBuchanan314/ftpd
+
+https://github.com/RetroGamer74/sys-ftpd
+
+PricelessTwo2
+
+And special thanks to Rumba the retrogamer_74 dog
