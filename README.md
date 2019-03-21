@@ -1,4 +1,4 @@
-# sys-play
+# sys-play-nx
 
 Este es un sysmodule de nintendo-switch que reproduce música en segundo plano
 
@@ -22,7 +22,7 @@ módulos / música / fondo5.mp3
 
 
 english
-# sys-play
+# sys-play-nx
 
 This is a nintendo-switch sysmodule which play music in the background
 
