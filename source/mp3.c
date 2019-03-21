@@ -41,7 +41,8 @@ void mp3MutInit() {
 
 int initMp3(const char* file)
 {
-    
+
+
 	int err = 0;
 	int encoding = 0;
 
@@ -163,8 +164,8 @@ void playMp3(char* file) {
 
     }
 
-	while(toPlayCount--)
-		audoutWaitPlayFinish(&audout_released_buf, &released_count, 1000000000L);
+//	while(toPlayCount--)
+//		audoutWaitPlayFinish(&audout_released_buf, &released_count, 1000000000L);
 
 	exitMp3();
 	mutexUnlock(&mp3Mutex);

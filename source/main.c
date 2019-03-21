@@ -65,30 +65,43 @@ void __appInit(void)
 
 void wakey()
 {
+u32 list = 0;
+static char filename[32] = "modules/music/fondo.mp3";
     while (appletMainLoop())
     {
-		svcSleepThread(1000000000L);
+	if (music == 1){svcSleepThread(1e+8L);}else{svcSleepThread(1000000000L);}
+		
 //		mp3MutInit();
-		if (music == 1)
-		playMp3("modules/music/fondo.mp3");
-		if (music == 1)
-		playMp3("modules/music/fondo2.mp3");
-		if (music == 1)
-		playMp3("modules/music/fondo3.mp3");
-		if (music == 1)
-		playMp3("modules/music/fondo4.mp3");
-		if (music == 1)
-		playMp3("modules/music/fondo5.mp3");
-    }
+
+		if (music == 1){
+			playMp3(filename);
+			sprintf(filename, "modules/music/fondo%d.mp3", list);
+			list++;
+		}
+		
+//fail safe
+if (list >= 6){list = 0;}
+
 }
 
+}
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
 
+	
     mp3MutInit();
 //    pauseInit();
+
+pminfoInitialize();
+    u64 pid = 89;
+	pmdmntGetApplicationPid(&pid);
+/*
+	FILE *f;
+	f = fopen("/logs/sysplay.log", "a+");
+	fprintf(f, (char *) pid);
+*/	
 	Thread pauseThread;
     Result rc = threadCreate(&pauseThread, wakey, NULL, 0x4000, 49, 3);
     if (R_FAILED(rc))
@@ -96,6 +109,9 @@ int main(int argc, char **argv)
     rc = threadStart(&pauseThread);
     if (R_FAILED(rc))
         fatalLater(rc);
+
+		
+		
     while (appletMainLoop())
     {
 	    svcSleepThread(1e+8L);
@@ -109,6 +125,8 @@ int main(int argc, char **argv)
 			audoutExit();
 				}else{
 			music = 1;
+			
+
 			audoutInitialize();
 			audoutStartAudioOut();
 			}
@@ -117,7 +135,10 @@ int main(int argc, char **argv)
 
 		if ((kDown & KEY_LSTICK || kDown & KEY_RSTICK) && (kHeld & KEY_LSTICK && kHeld & KEY_RSTICK)){break;}
 
-	}
+//		if (pid == 0x0100000000001000){break;}
+//		if (pid == 0x420000000000000B){break;}	
+		
+		}
 	fsdevUnmountAll();
     fsExit();
     smExit();
