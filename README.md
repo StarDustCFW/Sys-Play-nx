@@ -28,6 +28,10 @@ módulos/música/fondo1.mp3
 
 módulos/música/fondo5.mp3
 
+ ## instalasion
+ 
+* Descomprimir en la raiz del sd y sobrescribir
+* Reboot
 
 * English
 # Sys-Play-NX
@@ -58,6 +62,11 @@ modules/music/fondo1.mp3
 (...)
 
 modules/music/fondo5.mp3
+
+## instalation
+
+* Unzip the content in the root of the SD card
+* Reboot
 
 # Credits
 
