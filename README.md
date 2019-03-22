@@ -29,7 +29,7 @@ módulos/música/fondo1.mp3
 módulos/música/fondo5.mp3
 
  ## instalasion
- 
+* Descarga la ultima release [Aqui](https://github.com/Kronos2308/Sys-Play-nx/releases)
 * Descomprimir en la raiz del sd y sobrescribir
 * Reboot
 
@@ -64,10 +64,11 @@ modules/music/fondo1.mp3
 modules/music/fondo5.mp3
 
 ## instalation
-
+* Download the last release [Here](https://github.com/Kronos2308/Sys-Play-nx/releases)
 * Unzip the content in the root of the SD card
 * Reboot
-
+## Suport (Preguntas)
+# [Discord](https://discord.io/myrincon)
 # Credits
 
 https://github.com/DavidBuchanan314/ftpd
