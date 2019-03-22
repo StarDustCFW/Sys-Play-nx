@@ -29,7 +29,8 @@ char fake_heap[HEAP_SIZE];
 
 //main Switch
 u32 music = 1;
-
+u32 list = 0;
+char filename[32];
 
 // we override libnx internals to do a minimal init
 void __libnx_initheap(void)
@@ -65,22 +66,23 @@ void __appInit(void)
 
 void wakey()
 {
-u32 list = 0;
-static char filename[32] = "modules/music/fondo.mp3";
     while (appletMainLoop())
     {
+	if (list <= 0){sprintf(filename, "modules/music/fondo.mp3");}
+	
 	if (music == 1){svcSleepThread(1e+8L);}else{svcSleepThread(1000000000L);}
-		
 //		mp3MutInit();
 
 		if (music == 1){
+			list++;
 			playMp3(filename);
 			sprintf(filename, "modules/music/fondo%d.mp3", list);
-			list++;
 		}
 		
-//fail safe
-if (list >= 6){list = 0;}
+//limit of sounds, has fondo(0...1...2).mp3
+if (list >= 6){
+list = 0;
+}
 
 }
 
@@ -93,11 +95,11 @@ int main(int argc, char **argv)
 	
     mp3MutInit();
 //    pauseInit();
-
+/*
 pminfoInitialize();
     u64 pid = 89;
 	pmdmntGetApplicationPid(&pid);
-/*
+
 	FILE *f;
 	f = fopen("/logs/sysplay.log", "a+");
 	fprintf(f, (char *) pid);
@@ -109,9 +111,6 @@ pminfoInitialize();
     rc = threadStart(&pauseThread);
     if (R_FAILED(rc))
         fatalLater(rc);
-
-		
-		
     while (appletMainLoop())
     {
 	    svcSleepThread(1e+8L);
@@ -125,14 +124,35 @@ pminfoInitialize();
 			audoutExit();
 				}else{
 			music = 1;
-			
-
 			audoutInitialize();
 			audoutStartAudioOut();
 			}
 		}
 			    hidScanInput();
 
+	if (music == 1){
+		if ((kDown & KEY_ZR|| kDown & KEY_R) && (kHeld & KEY_ZR && kHeld & KEY_R)){
+		music = 0;
+		audoutExit();
+		playMp3(filename);
+		audoutInitialize();
+		audoutStartAudioOut();
+		music = 1;
+		}
+	}
+	
+	if (music == 1){
+		if ((kDown & KEY_ZL|| kDown & KEY_L) && (kHeld & KEY_ZL && kHeld & KEY_L)){
+		music = 0;
+		audoutExit();
+		list--;
+		list--;
+		playMp3(filename);
+		audoutInitialize();
+		audoutStartAudioOut();
+		music = 1;
+		}
+	}
 		if ((kDown & KEY_LSTICK || kDown & KEY_RSTICK) && (kHeld & KEY_LSTICK && kHeld & KEY_RSTICK)){break;}
 
 //		if (pid == 0x0100000000001000){break;}
