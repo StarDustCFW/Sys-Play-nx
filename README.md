@@ -33,7 +33,7 @@ módulos/música/fondo5.mp3
 * Descomprimir en la raiz del sd y sobrescribir
 * Reboot
 
-* English
+# English
 # Sys-Play-NX
 
 This is a nintendo-switch sysmodule which play music in the background
