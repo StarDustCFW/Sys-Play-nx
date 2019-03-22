@@ -1,38 +1,53 @@
-# sys-play-nx
+# Sys-Play-NX
 
 Este es un sysmodule de nintendo-switch que reproduce música en segundo plano
 
 ¡Coloque el contenido de la carpeta sd_card en la raíz de su tarjeta sd o los sonidos no funcionarán!
 
-Teclas de acceso rápido: L R X detiene y reproduce música, R3 L3 cierra el servicio hasta el siguiente reinicio (solo por precausion)
+Teclas de acceso rápido:
 
-es un beta
+* L R X detiene y reproduce música
 
-* Tocará consecutivamente una selección de música, *
+* R ZR siguiente cancion en lista (solo funciona si la musica se esta reprodusiendo)
+
+* L ZL anterior cancion en lista (solo funciona si la musica se esta reprodusiendo)
+
+* R3 L3 cierra el servicio hasta el siguiente reinicio (solo por precausion)
+
+Es un beta
+
+## Tocará consecutivamente una selección de música,
 
 Esto debera estar ubicado en:
 
-módulos / música / fondo.mp3
+módulos/música/fondo.mp3
 
-módulos / música / fondo1.mp3
+módulos/música/fondo1.mp3
 
 (...)
 
-módulos / música / fondo5.mp3
+módulos/música/fondo5.mp3
 
 
-english
-# sys-play-nx
+* English
+# Sys-Play-NX
 
 This is a nintendo-switch sysmodule which play music in the background
 
 Put the contents of the sd_card folder in the root of your sd-card or else the sounds won't work!
 
-Hotkeys: L R X stop and play music, R3 L3 close the servise to the next restart (only for safe)
+Hotkeys: 
+* L R X stop and play music,
 
-is a beta 
+* R ZR next sound
 
-* will play consecutively a selection of music, 
+* L ZL prev sound
+
+* R3 L3 close the servise to the next restart (only for safe)
+
+Is a beta 
+
+## will play consecutively a selection of music, 
 
 this should be located in:
 
