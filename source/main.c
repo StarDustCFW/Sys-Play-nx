@@ -30,6 +30,7 @@ char fake_heap[HEAP_SIZE];
 //main Switch
 u32 music = 1;
 u32 list = 0;
+u32 isplay = 0;
 char filename[32];
 
 // we override libnx internals to do a minimal init
@@ -68,22 +69,27 @@ void wakey()
 {
     while (appletMainLoop())
     {
-	if (list <= 0){sprintf(filename, "modules/music/fondo.mp3");}
+	if (list <= 0){sprintf(filename, "StarDust/music/fondo.mp3");}
 	
 	if (music == 1){svcSleepThread(1e+8L);}else{svcSleepThread(1000000000L);}
 //		mp3MutInit();
 
 		if (music == 1){
 			list++;
+			isplay = 1;
 			playMp3(filename);
-			sprintf(filename, "modules/music/fondo%d.mp3", list);
+			sprintf(filename, "StarDust/music/fondo%d.mp3", list);
+			isplay = 0;
 		}
 		
 //limit of sounds, has fondo(0...1...2).mp3
 if (list >= 6){
 list = 0;
 }
-
+//fix over 
+if (isplay >= 2){
+isplay = 0;
+}
 }
 
 }
@@ -92,18 +98,14 @@ int main(int argc, char **argv)
     (void)argc;
     (void)argv;
 
-	
     mp3MutInit();
 //    pauseInit();
-/*
-pminfoInitialize();
-    u64 pid = 89;
-	pmdmntGetApplicationPid(&pid);
-
-	FILE *f;
-	f = fopen("/logs/sysplay.log", "a+");
-	fprintf(f, (char *) pid);
-*/	
+FILE *Play_file = fopen("StarDust/music/pause", "r");
+    if (Play_file != NULL)
+    {
+        music = 0;
+        fclose(Play_file);
+    }	
 	Thread pauseThread;
     Result rc = threadCreate(&pauseThread, wakey, NULL, 0x4000, 49, 3);
     if (R_FAILED(rc))
@@ -121,9 +123,12 @@ pminfoInitialize();
         if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_X) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_X)){
 			if (music == 1)
 			{music = 0;
+			FILE *pause_file = fopen("StarDust/music/pause", "w");
+			fclose(pause_file);
 			audoutExit();
 				}else{
 			music = 1;
+			unlink("/StarDust/music/pause");
 			audoutInitialize();
 			audoutStartAudioOut();
 			}
@@ -134,7 +139,10 @@ pminfoInitialize();
 		if ((kDown & KEY_ZR|| kDown & KEY_R) && (kHeld & KEY_ZR && kHeld & KEY_R)){
 		music = 0;
 		audoutExit();
-		playMp3(filename);
+		while (appletMainLoop()){
+		svcSleepThread(1e+8L);
+		if (isplay == 0){break;}
+		}
 		audoutInitialize();
 		audoutStartAudioOut();
 		music = 1;
@@ -144,10 +152,13 @@ pminfoInitialize();
 	if (music == 1){
 		if ((kDown & KEY_ZL|| kDown & KEY_L) && (kHeld & KEY_ZL && kHeld & KEY_L)){
 		music = 0;
+		list--;
+		list--;
 		audoutExit();
-		list--;
-		list--;
-		playMp3(filename);
+		while (appletMainLoop()){
+		svcSleepThread(1e+8L);
+		if (isplay == 0){break;}
+		}
 		audoutInitialize();
 		audoutStartAudioOut();
 		music = 1;
