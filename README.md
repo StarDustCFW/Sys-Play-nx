@@ -20,13 +20,13 @@ Es un beta
 
 Esto debera estar ubicado en:
 
-módulos/música/fondo.mp3
+StarDust/Music/fondo.mp3
 
-módulos/música/fondo1.mp3
+StarDust/Music/fondo1.mp3
 
 (...)
 
-módulos/música/fondo5.mp3
+StarDust/Music/fondo5.mp3
 
  ## instalasion
 * Descarga la ultima release [Aqui](https://github.com/Kronos2308/Sys-Play-nx/releases)
@@ -55,13 +55,13 @@ Is a beta
 
 this should be located in:
 
-modules/music/fondo.mp3
+StarDust/Music/fondo.mp3
 
-modules/music/fondo1.mp3
+StarDust/Music/fondo1.mp3
 
 (...)
 
-modules/music/fondo5.mp3
+StarDust/Music/fondo5.mp3
 
 ## instalation
 * Download the last release [Here](https://github.com/Kronos2308/Sys-Play-nx/releases)
