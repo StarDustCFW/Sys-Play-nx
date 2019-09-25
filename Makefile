@@ -23,7 +23,7 @@ SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
 EXEFS_SRC	:=	exefs_src
-ROMFS	:=	romfs
+#ROMFS	:=	romfs
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -163,5 +163,5 @@ endif
 dist:
 	mkdir -p sd_card/atmosphere/titles/420000000000000B/flags
 	cp $(OUTPUT).nsp sd_card/atmosphere/titles/420000000000000B/exefs.nsp
-	touch sd_card/atmosphere/titles/420000000000000B/flags/boot2.flag
+	#touch sd_card/atmosphere/titles/420000000000000B/flags/boot2.flag
 

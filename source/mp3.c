@@ -6,7 +6,6 @@
 #include <mpg123.h>
 #include <time.h>
 #include "util.h"
-#include "console.h"
 
 #include <switch.h>
 
@@ -41,8 +40,7 @@ void mp3MutInit() {
 
 int initMp3(const char* file)
 {
-
-
+    
 	int err = 0;
 	int encoding = 0;
 
@@ -161,12 +159,19 @@ void playMp3(char* file) {
 		}
         for(int curBuf = 0; curBuf < BUF_COUNT/2 && toPlayCount--; curBuf++)
             audoutWaitPlayFinish(&audout_released_buf, &released_count, 1000000000L);
-
+			while(file_exist("/StarDust/music/pause"))
+			{
+			svcSleepThread(1000000000L);
+			if (file_exist("StarDust/music/stop"))
+			break;
+			}
+		if (file_exist("StarDust/music/stop"))
+		break;
     }
 
-//	while(toPlayCount--)
-//		audoutWaitPlayFinish(&audout_released_buf, &released_count, 1000000000L);
+	while(toPlayCount--)
+		audoutWaitPlayFinish(&audout_released_buf, &released_count, 1000000000L);
 
-	exitMp3();
+    exitMp3();
 	mutexUnlock(&mp3Mutex);
 }

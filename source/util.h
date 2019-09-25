@@ -1,6 +1,6 @@
 #include <switch.h>
 
 void fatalLater(Result err);
-void pauseInit();
-bool isPaused();
-void setPaused(bool newPaused);
+bool file_exist(char* File);
+void create_flag(char* File);
+bool led_on(u64 inter);
