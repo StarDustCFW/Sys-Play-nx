@@ -6,7 +6,9 @@ Este es un sysmodule de nintendo-switch que reproduce música en segundo plano
 
 Teclas de acceso rápido:
 
-* L R X detiene y reproduce música
+* L R X Reproduccion / Pausa
+
+* L R B Detener Música (Se mantiene detenida aunque se reinisie)(solo funciona si la musica se esta reprodusiendo)
 
 * R ZR siguiente cancion en lista (solo funciona si la musica se esta reprodusiendo)
 
@@ -33,7 +35,7 @@ StarDust/Music/fondo5.mp3
 * Descomprimir en la raiz del sd y sobrescribir
 * Reboot
 
-# English
+## English
 # Sys-Play-NX
 
 This is a nintendo-switch sysmodule which play music in the background
@@ -41,13 +43,15 @@ This is a nintendo-switch sysmodule which play music in the background
 Put the contents of the sd_card folder in the root of your sd-card or else the sounds won't work!
 
 Hotkeys: 
-* L R X stop and play music,
+ L R X Play / Pause
 
-* R ZR next sound
+* L R B Stop Music (It remains stopped even if it is restarted) (only works if the music is playing back)
 
-* L ZL prev sound
+* R ZR next song on the list (only works if the music is playing back)
 
-* R3 L3 close the servise to the next restart (only for safe)
+* L ZL previous song on the list (only works if the music is playing back)
+
+* R3 L3 closes the service until the next restart (only by precaution)
 
 Is a beta 
 
