@@ -22,13 +22,13 @@ Es un beta
 
 Esto debera estar ubicado en:
 
-StarDust/Music/fondo.mp3
+StarDust/Music/0.mp3
 
-StarDust/Music/fondo1.mp3
+StarDust/Music/1.mp3
 
 (...)
 
-StarDust/Music/fondo5.mp3
+StarDust/Music/20.mp3
 
  ## instalasion
 * Descarga la ultima release [Aqui](https://github.com/Kronos2308/Sys-Play-nx/releases)
@@ -59,13 +59,13 @@ Is a beta
 
 this should be located in:
 
-StarDust/Music/fondo.mp3
+StarDust/Music/0.mp3
 
-StarDust/Music/fondo1.mp3
+StarDust/Music/1.mp3
 
 (...)
 
-StarDust/Music/fondo5.mp3
+StarDust/Music/20.mp3
 
 ## instalation
 * Download the last release [Here](https://github.com/Kronos2308/Sys-Play-nx/releases)
