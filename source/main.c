@@ -19,6 +19,7 @@
 #include "util.h"
 
 #include "mp3.h"
+#include "led.h"
 
 #define TITLE_ID 0x420000000000000B
 #define HEAP_SIZE 0x000240000
@@ -65,37 +66,47 @@ void __appInit(void)
     rc = hidInitialize();
     if (R_FAILED(rc))
         fatalLater(rc);
+    rc = hidsysInitialize();
+    if (R_FAILED(rc))
+        fatalLater(rc);
+    rc = setsysInitialize();
+    if (R_SUCCEEDED(rc))
+    {
+        SetSysFirmwareVersion fw;
+        rc = setsysGetFirmwareVersion(&fw);
+        if (R_SUCCEEDED(rc))
+            hosversionSet(MAKEHOSVERSION(fw.major, fw.minor, fw.micro));
+        setsysExit();
+    }
 }
 
 void wakey()
 {
 			audoutInitialize();
 			audoutStartAudioOut();
-u32 cutl = 0;		
+	
 	
     while (appletMainLoop())
     {
-	if (list <= 0){sprintf(filename, "StarDust/music/fondo.mp3");}
+//	if (list <= 0){sprintf(filename, "StarDust/music/fondo.mp3");}
 	
 	svcSleepThread(1000000000L);
 //		mp3MutInit();
-		if(cutl == 0){
-		cutl++;
-		}
 		if (music == 1){
-			list++;
 			isplay = 1;
+			sprintf(filename, "StarDust/music/%d.mp3", list);
 			if (file_exist(filename))
 			{
-			playMp3("StarDust/music/inputok.mp3");
+			flash_led_connect();
+//			playMp3("StarDust/music/inputok.mp3");
 			playMp3(filename);
 			}
-			sprintf(filename, "StarDust/music/fondo%d.mp3", list);
+			list++;
 			isplay = 0;
 		}
 		
-//limit of sounds, has fondo(0...1...2).mp3
-if (list >= 7){
+//limit of sounds, has (0...1...2).mp3
+if (list >= 20){
 list = 0;
 }
 //fix over 
@@ -136,8 +147,8 @@ int main(int argc, char **argv)
 			{
 				if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_B) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_B))
 				{
+				flash_led_connect();
 				music = 0;
-				led_on(1);
 				list--;
 				audoutStopAudioOut();
 				create_flag("StarDust/music/stop");
@@ -147,15 +158,14 @@ int main(int argc, char **argv)
 			
 		//Pause
         if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_X) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_X)){
+			flash_led_connect();
 			if (music == 1)
 			{music = 0;
-			led_on(1);
 			audoutStopAudioOut();
 			create_flag("StarDust/music/pause");
 			audoutExit();
 				}else{
 			music = 1;
-			led_on(0);
 			audoutInitialize();
 			unlink("/StarDust/music/pause");
 			unlink("/StarDust/music/stop");
@@ -166,6 +176,7 @@ int main(int argc, char **argv)
 	//next
 	if (music == 1){
 		if ((kDown & KEY_ZR|| kDown & KEY_R) && (kHeld & KEY_ZR && kHeld & KEY_R)){
+		flash_led_connect();
 		music = 0;
 		create_flag("StarDust/music/stop");
 		audoutStopAudioOut();
@@ -182,6 +193,7 @@ int main(int argc, char **argv)
 	//prev
 	if (music == 1){
 		if ((kDown & KEY_ZL|| kDown & KEY_L) && (kHeld & KEY_ZL && kHeld & KEY_L)){
+		flash_led_connect();
 		music = 0;
 		list--;
 		list--;
@@ -206,6 +218,8 @@ int main(int argc, char **argv)
 //		if (pid == 0x420000000000000B){break;}	
 		
 		}
+	flash_led_connect();
+	flash_led_connect();
 	fsdevUnmountAll();
     fsExit();
     smExit();
