@@ -14,21 +14,19 @@ Teclas de acceso rápido:
 
 * L ZL anterior cancion en lista (solo funciona si la musica se esta reprodusiendo)
 
+* ZR ZL Y Escanear por nuevas cansiones (solo funciona si la musica no se esta reprodusiendo)
+
 * R3 L3 cierra el servicio hasta el siguiente reinicio (solo por precausion)
 
 Es un beta
 
 ## Tocará consecutivamente una selección de música,
 
-Esto debera estar ubicado en:
+Estas deberas estar ubicadas en:
 
-StarDust/Music/0.mp3
+StarDust/Music/
 
-StarDust/Music/1.mp3
-
-(...)
-
-StarDust/Music/20.mp3
+El limite son 200 canciones de momento
 
  ## instalasion
 * Descarga la ultima release [Aqui](https://github.com/Kronos2308/Sys-Play-nx/releases)
@@ -51,21 +49,19 @@ Hotkeys:
 
 * L ZL previous song on the list (only works if the music is playing back)
 
+* ZR ZL Y Scan for new cansions (only works if the music is not playing back)
+
 * R3 L3 closes the service until the next restart (only by precaution)
 
-Is a beta 
+It's a beta
 
-## will play consecutively a selection of music, 
+## Will play a selection of music consecutively,
 
-this should be located in:
+These should be located at:
 
-StarDust/Music/0.mp3
+StarDust/Music/
 
-StarDust/Music/1.mp3
-
-(...)
-
-StarDust/Music/20.mp3
+The limit is 200 songs for the moment
 
 ## instalation
 * Download the last release [Here](https://github.com/Kronos2308/Sys-Play-nx/releases)
