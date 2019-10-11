@@ -90,7 +90,7 @@ void wakey()
 		if (music == 1)
 		{
 			isplay = 1;
-			sprintf(filename, "StarDust/music/%d.mp3", list);
+			sprintf(filename, "StarDust/music/weed-%d.mp3", list);
 			if (file_exist(filename))
 			{
 				flash_led_connect();
@@ -125,29 +125,30 @@ void Scan_folder(){
         printf(ent->d_name);
         char filename[272];
         char destname[272];
-		musiclimit++;
+		
 		flash_led_connect();
-		if(strlen(ent->d_name) > 6)
+//		if(strlen(ent->d_name) > 6)		
+		if(strstr(ent->d_name,".mp3") != NULL)
 		{
-			snprintf(filename, 272, "/StarDust/music/%s", ent->d_name);
+			musiclimit++;
+			if(strstr(ent->d_name,"weed-") == NULL)
+			{
+					snprintf(filename, 272, "/StarDust/music/%s", ent->d_name);
 				for(int i = 0; i < 200; i ++)
 				{
 					//rename the mp3 for use 
-					snprintf(destname, 272, "/StarDust/music/%d.mp3", i);
+					snprintf(destname, 272, "/StarDust/music/weed-%d.mp3", i);
 					if (!file_exist(destname))
 					{
 						rename(filename, destname); 
 						break;
 					}
 				}
+			}
 		}
     }
 
 	musiclimit--;//ajust the use of 0.mp3
-	if(file_exist("StarDust/music/stop"))
-	musiclimit--;
-	if(file_exist("StarDust/music/pause"))
-	musiclimit--;
 			if (file_exist("StarDust/x.log"))
 			{
 			FILE *f;
