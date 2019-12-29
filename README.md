@@ -49,7 +49,7 @@ Hotkeys:
 
 * L ZL previous song on the list (only works if the music is playing back)
 
-* ZR ZL Y Scan for new cansions (only works if the music is not playing back)
+* ZR ZL Y Scan for new songs (only works if the music is not playing back)
 
 * R3 L3 closes the service until the next restart (only by precaution)
 
