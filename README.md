@@ -41,7 +41,7 @@ This is a nintendo-switch sysmodule which play music in the background
 Put the contents of the sd_card folder in the root of your sd-card or else the sounds won't work!
 
 Hotkeys: 
- L R X Play / Pause
+ * L R X Play / Pause
 
 * L R B Stop Music (It remains stopped even if it is restarted) (only works if the music is playing back)
 
