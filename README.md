@@ -77,4 +77,3 @@ https://github.com/RetroGamer74/sys-ftpd
 
 PricelessTwo2
 
-And special thanks to Rumba the retrogamer_74 dog
