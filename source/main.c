@@ -83,9 +83,6 @@ void __appInit(void)
 //controls
 void wakey()
 {
-    while (appletMainLoop())
-    {
-	svcSleepThread(1000000000L);
     hidScanInput();
         u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
         u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
@@ -99,6 +96,7 @@ void wakey()
 				music = 0;
 				list--;
 				audoutStopAudioOut();
+				Stop = 1;
 				create_flag("StarDust/music/stop");
 				audoutExit();
 				}
@@ -110,31 +108,24 @@ void wakey()
 			if (music == 1)
 			{music = 0;
 			audoutStopAudioOut();
-			create_flag("StarDust/music/pause");
+			Pause = 1;
 			audoutExit();
 				}else{
 			music = 1;
 			audoutInitialize();
-			unlink("/StarDust/music/pause");
+			Pause = 0;
+			Stop = 0;
 			unlink("/StarDust/music/stop");
 			audoutStartAudioOut();
 			}
 		}
 
-	//next
+		//next
 		if (music == 1){
 			if ((kDown & KEY_ZR|| kDown & KEY_R) && (kHeld & KEY_ZR && kHeld & KEY_R)){
 			flash_led_connect();
-			music = 0;
-			create_flag("StarDust/music/stop");
-			audoutStopAudioOut();
-			while (appletMainLoop()){
-			svcSleepThread(1000000000L);
-			if (isplay == 0){break;}
-			}
-			unlink("/StarDust/music/stop");
-			audoutStartAudioOut();
-			music = 1;
+			prevmusic = 2;
+			Stop = 1;
 			}
 		}
 
@@ -142,21 +133,11 @@ void wakey()
 		if (music == 1){
 			if ((kDown & KEY_ZL|| kDown & KEY_L) && (kHeld & KEY_ZL && kHeld & KEY_L)){
 			flash_led_connect();
-			music = 0;
 			prevmusic = 1;
-			create_flag("StarDust/music/stop");
-			audoutStopAudioOut();
-			while (appletMainLoop()){
-			svcSleepThread(1000000000L);
-			if (isplay == 0){break;}
-			}
-			unlink("/StarDust/music/stop");
-			audoutStartAudioOut();
-			prevmusic = 0;
-			music = 1;
+			Stop = 1;
 			}
 		}
-	}
+		
 }
 
 void Scan_folder(){
@@ -224,14 +205,16 @@ unlink("/StarDust/music/pause");//just in case
     }
 /*	Result rc;
 	Thread pauseThread;
-	ThreadFunc entry = (ThreadFunc)0x000240000;
-	rc = threadCreate(&pauseThread,entry , wakey, NULL, 0x4000, 49, 3);
-    if (R_FAILED(rc))
-        fatalLater(rc);
+	std::thread Thread(&pauseThread, wakey, NULL, 0x4000, 49, 3);
+//	ThreadFunc entry = (ThreadFunc)0x000240000;
+//	rc = threadCreate(&pauseThread,entry , wakey, NULL, 0x4000, 49, 3);
+//    if (R_FAILED(rc))
+//        fatalLater(rc);
     rc = threadStart(&pauseThread);
     if (R_FAILED(rc))
         fatalLater(rc);
 	*/
+
     while (appletMainLoop())
     {
 	    svcSleepThread(1000000000L);
@@ -246,11 +229,15 @@ unlink("/StarDust/music/pause");//just in case
 			}
 			if(prevmusic == 0)
 			list++;
-			else
+			else{
+				Stop = 0;
+				if(prevmusic == 1){
 				if(list <= 0)
 					list = musiclimit;
 					else
 						list--;
+				}else list++;
+			}
 			isplay = 0;
 		}
 		
@@ -259,7 +246,7 @@ unlink("/StarDust/music/pause");//just in case
 		{
 			list = 0;
 		}
-		
+		wakey();
 	    hidScanInput();
         u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
         u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
@@ -270,7 +257,7 @@ unlink("/StarDust/music/pause");//just in case
 			Scan_folder();
 			}
 		}
-
+/*
 	//kill service
 	if ((kDown & KEY_LSTICK || kDown & KEY_RSTICK) && (kHeld & KEY_LSTICK && kHeld & KEY_RSTICK)){
 	break;}
@@ -278,8 +265,9 @@ unlink("/StarDust/music/pause");//just in case
 
 //		if (pid == 0x0100000000001000){break;}
 //		if (pid == 0x420000000000000B){break;}	
-		
+		*/
 	}
+
 	flash_led_connect();
 	flash_led_connect();
 	fsdevUnmountAll();

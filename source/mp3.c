@@ -26,7 +26,13 @@ int                     curBuf = 0;
 static Mutex mp3Mutex;
 extern u32 Pause;
 extern u32 Stop;
+extern u32 music;
+extern u32 list;
+extern u32 isplay;
+extern u32 musiclimit;
+extern u32 prevmusic;
 
+extern void wakey();
 void mp3MutInit() {
 	mutexInit(&mp3Mutex);
 	
@@ -163,11 +169,18 @@ void playMp3(char* file) {
 			while(Pause == 1)
 			{
 			svcSleepThread(1000000000L);
-			if (Stop == 1)
-			break;
+			wakey();
+				if (Stop == 1){
+				break;
+					
+				}
 			}
+			wakey();
 		if (Stop == 1)
+		{
 		break;
+			
+		}
     }
 
 	while(toPlayCount--)
