@@ -80,34 +80,81 @@ void __appInit(void)
     }
 }
 
+//controls
 void wakey()
-{	//Audio Thread
+{
     while (appletMainLoop())
     {
 	svcSleepThread(1000000000L);
-		if (music == 1)
-		{
-			isplay = 1;
-			sprintf(filename, "StarDust/music/weed-%d.mp3", list);
-			if (file_exist(filename))
-			{
-				flash_led_connect();
-				playMp3(filename);
-			}
-			if(prevmusic == 0)
-			list++;
-			else
-				if(list <= 0)
-					list = musiclimit;
-					else
-						list--;
-			isplay = 0;
-		}
+    hidScanInput();
+        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+        u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
 		
-		//limit of sounds by list
-		if (list > musiclimit)
-		{
-			list = 0;
+			//Stop
+			if (music == 1)
+			{
+				if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_B) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_B))
+				{
+				flash_led_connect();
+				music = 0;
+				list--;
+				audoutStopAudioOut();
+				create_flag("StarDust/music/stop");
+				audoutExit();
+				}
+			}
+			
+		//Pause unestable
+        if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_X) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_X)){
+			flash_led_connect();
+			if (music == 1)
+			{music = 0;
+			audoutStopAudioOut();
+			create_flag("StarDust/music/pause");
+			audoutExit();
+				}else{
+			music = 1;
+			audoutInitialize();
+			unlink("/StarDust/music/pause");
+			unlink("/StarDust/music/stop");
+			audoutStartAudioOut();
+			}
+		}
+
+	//next
+		if (music == 1){
+			if ((kDown & KEY_ZR|| kDown & KEY_R) && (kHeld & KEY_ZR && kHeld & KEY_R)){
+			flash_led_connect();
+			music = 0;
+			create_flag("StarDust/music/stop");
+			audoutStopAudioOut();
+			while (appletMainLoop()){
+			svcSleepThread(1000000000L);
+			if (isplay == 0){break;}
+			}
+			unlink("/StarDust/music/stop");
+			audoutStartAudioOut();
+			music = 1;
+			}
+		}
+
+		//prev
+		if (music == 1){
+			if ((kDown & KEY_ZL|| kDown & KEY_L) && (kHeld & KEY_ZL && kHeld & KEY_L)){
+			flash_led_connect();
+			music = 0;
+			prevmusic = 1;
+			create_flag("StarDust/music/stop");
+			audoutStopAudioOut();
+			while (appletMainLoop()){
+			svcSleepThread(1000000000L);
+			if (isplay == 0){break;}
+			}
+			unlink("/StarDust/music/stop");
+			audoutStartAudioOut();
+			prevmusic = 0;
+			music = 1;
+			}
 		}
 	}
 }
@@ -175,95 +222,54 @@ unlink("/StarDust/music/pause");//just in case
     {
         music = 0;
     }
-	Result rc;
+/*	Result rc;
 	Thread pauseThread;
-	rc = threadCreate(&pauseThread, wakey, NULL, 0x4000, 49, 3);
+	ThreadFunc entry = (ThreadFunc)0x000240000;
+	rc = threadCreate(&pauseThread,entry , wakey, NULL, 0x4000, 49, 3);
     if (R_FAILED(rc))
         fatalLater(rc);
     rc = threadStart(&pauseThread);
     if (R_FAILED(rc))
         fatalLater(rc);
+	*/
     while (appletMainLoop())
     {
 	    svcSleepThread(1000000000L);
+		if (music == 1)
+		{
+			isplay = 1;
+			sprintf(filename, "StarDust/music/weed-%d.mp3", list);
+			if (file_exist(filename))
+			{
+				flash_led_connect();
+				playMp3(filename);
+			}
+			if(prevmusic == 0)
+			list++;
+			else
+				if(list <= 0)
+					list = musiclimit;
+					else
+						list--;
+			isplay = 0;
+		}
+		
+		//limit of sounds by list
+		if (list > musiclimit)
+		{
+			list = 0;
+		}
+		
 	    hidScanInput();
         u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
         u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
 		
-			//Stop
-			if (music == 1)
-			{
-				if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_B) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_B))
-				{
-				flash_led_connect();
-				music = 0;
-				list--;
-				audoutStopAudioOut();
-				create_flag("StarDust/music/stop");
-				audoutExit();
-				}
-			}
-			
-		//Pause unestable
-        if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_X) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_X)){
+		if (music == 0){
+			if ((kDown & KEY_ZL || kDown & KEY_ZR || kDown & KEY_Y) && (kHeld & KEY_ZL && kHeld & KEY_ZR && kHeld & KEY_Y)){
 			flash_led_connect();
-			if (music == 1)
-			{music = 0;
-			audoutStopAudioOut();
-			create_flag("StarDust/music/pause");
-			audoutExit();
-				}else{
-			music = 1;
-			audoutInitialize();
-			unlink("/StarDust/music/pause");
-			unlink("/StarDust/music/stop");
-			audoutStartAudioOut();
+			Scan_folder();
 			}
 		}
-
-	//next
-	if (music == 1){
-		if ((kDown & KEY_ZR|| kDown & KEY_R) && (kHeld & KEY_ZR && kHeld & KEY_R)){
-		flash_led_connect();
-		music = 0;
-		create_flag("StarDust/music/stop");
-		audoutStopAudioOut();
-		while (appletMainLoop()){
-		svcSleepThread(1000000000L);
-		if (isplay == 0){break;}
-		}
-		unlink("/StarDust/music/stop");
-		audoutStartAudioOut();
-		music = 1;
-		}
-	}
-
-	//prev
-	if (music == 1){
-		if ((kDown & KEY_ZL|| kDown & KEY_L) && (kHeld & KEY_ZL && kHeld & KEY_L)){
-		flash_led_connect();
-		music = 0;
-		prevmusic = 1;
-		create_flag("StarDust/music/stop");
-		audoutStopAudioOut();
-		while (appletMainLoop()){
-		svcSleepThread(1000000000L);
-		if (isplay == 0){break;}
-		}
-		unlink("/StarDust/music/stop");
-		audoutStartAudioOut();
-		prevmusic = 0;
-		music = 1;
-		}
-	}
-
-	if (music == 0){
-		if ((kDown & KEY_ZL || kDown & KEY_ZR || kDown & KEY_Y) && (kHeld & KEY_ZL && kHeld & KEY_ZR && kHeld & KEY_Y)){
-		flash_led_connect();
-		Scan_folder();
-		}
-	}
-
 
 	//kill service
 	if ((kDown & KEY_LSTICK || kDown & KEY_RSTICK) && (kHeld & KEY_LSTICK && kHeld & KEY_RSTICK)){
@@ -273,7 +279,7 @@ unlink("/StarDust/music/pause");//just in case
 //		if (pid == 0x0100000000001000){break;}
 //		if (pid == 0x420000000000000B){break;}	
 		
-		}
+	}
 	flash_led_connect();
 	flash_led_connect();
 	fsdevUnmountAll();
