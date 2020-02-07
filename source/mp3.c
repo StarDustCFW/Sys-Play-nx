@@ -11,7 +11,6 @@
 
 
 #define BUF_COUNT 2
-
 static size_t			buffSize;
 static mpg123_handle	*mh = NULL;
 static uint32_t			rate;
@@ -25,6 +24,8 @@ int                     curBuf = 0;
 #define swapbuf (curBuf = (curBuf+1)%(BUF_COUNT))
 
 static Mutex mp3Mutex;
+extern u32 Pause;
+extern u32 Stop;
 
 void mp3MutInit() {
 	mutexInit(&mp3Mutex);
@@ -159,13 +160,13 @@ void playMp3(char* file) {
 		}
         for(int curBuf = 0; curBuf < BUF_COUNT/2 && toPlayCount--; curBuf++)
             audoutWaitPlayFinish(&audout_released_buf, &released_count, 1000000000L);
-			while(file_exist("/StarDust/music/pause"))
+			while(Pause == 1)
 			{
 			svcSleepThread(1000000000L);
-			if (file_exist("StarDust/music/stop"))
+			if (Stop == 1)
 			break;
 			}
-		if (file_exist("StarDust/music/stop"))
+		if (Stop == 1)
 		break;
     }
 

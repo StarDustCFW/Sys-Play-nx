@@ -161,7 +161,7 @@ endif
 #---------------------------------------------------------------------------------------
 
 dist:
-	mkdir -p sd_card/atmosphere/titles/420000000000000B/flags
-	cp $(OUTPUT).nsp sd_card/atmosphere/titles/420000000000000B/exefs.nsp
+	mkdir -p sd_card/atmosphere/contents/420000000000000B/flags
+	cp $(OUTPUT).nsp sd_card/atmosphere/contents/420000000000000B/exefs.nsp
 	#touch sd_card/atmosphere/titles/420000000000000B/flags/boot2.flag
 

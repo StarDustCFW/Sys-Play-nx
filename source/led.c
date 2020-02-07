@@ -23,7 +23,7 @@ void flash_led_connect()
 
     u64 uniquePadIds[5] = {0};
 
-    size_t total_entries = 0;
+    s32 total_entries = 0;
 
     Result rc = hidsysGetUniquePadIds(uniquePadIds, 5, &total_entries);
     if (R_FAILED(rc) && rc != MAKERESULT(Module_Libnx, LibnxError_IncompatSysVer))
@@ -41,7 +41,7 @@ void flash_led_disconnect()
     u64 uniquePadIds[2];
     memset(uniquePadIds, 0, sizeof(uniquePadIds));
 
-    size_t total_entries = 0;
+    s32 total_entries = 0;
 
     Result rc = hidsysGetUniquePadsFromNpad(hidGetHandheldMode() ? CONTROLLER_HANDHELD : CONTROLLER_PLAYER_1, uniquePadIds, 2, &total_entries);
     if (R_FAILED(rc) && rc != MAKERESULT(Module_Libnx, LibnxError_IncompatSysVer))

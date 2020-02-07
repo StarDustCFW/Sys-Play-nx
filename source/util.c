@@ -44,7 +44,7 @@ void fatalLater(Result err)
     svcCloseHandle(srv);
 }
 
-bool file_exist(char* File)
+bool file_exist(const char* File)
 {
 FILE *Play_file = fopen(File, "r");
     if (Play_file != NULL)
@@ -55,7 +55,7 @@ FILE *Play_file = fopen(File, "r");
 	return false;
 }
 
-void create_flag(char* File)
+void create_flag(const char* File)
 {
 FILE *Play_file = fopen(File, "w");
 fclose(Play_file);

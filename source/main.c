@@ -1,23 +1,18 @@
 #include <string.h>
 #include <stdio.h>
 #include <dirent.h>
-
 #include <errno.h>
 #include <malloc.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include <malloc.h>
 #include <switch.h>
-
 #include <stdlib.h>
-
-// only for mkdir, used when creating the "logs" directory
 #include <sys/stat.h>
 
-#include <switch.h>
+// only for mkdir, used when creating the "logs" directory
 
 #include "util.h"
-
 #include "mp3.h"
 #include "led.h"
 
@@ -30,6 +25,9 @@ u32 __nx_applet_type = AppletType_None;
 // setup a fake heap
 char fake_heap[HEAP_SIZE];
 
+//Global vars
+u32 Pause = 0;
+u32 Stop = 0;
 //main Switch
 u32 music = 1;
 u32 list = 0;
@@ -177,9 +175,9 @@ unlink("/StarDust/music/pause");//just in case
     {
         music = 0;
     }
-	
+	Result rc;
 	Thread pauseThread;
-    Result rc = threadCreate(&pauseThread, wakey, NULL, 0x4000, 49, 3);
+	rc = threadCreate(&pauseThread, wakey, NULL, 0x4000, 49, 3);
     if (R_FAILED(rc))
         fatalLater(rc);
     rc = threadStart(&pauseThread);
