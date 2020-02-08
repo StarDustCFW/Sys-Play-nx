@@ -168,19 +168,12 @@ void playMp3(char* file) {
             audoutWaitPlayFinish(&audout_released_buf, &released_count, 1000000000L);
 			while(Pause == 1)
 			{
-			svcSleepThread(1000000000L);
-			wakey();
-				if (Stop == 1){
-				break;
-					
-				}
+				svcSleepThread(1000000000L);
+				wakey();
+				if (Stop == 1) break;
 			}
-			wakey();
-		if (Stop == 1)
-		{
-		break;
-			
-		}
+		wakey();
+		if (Stop == 1) break;
     }
 
 	while(toPlayCount--)

@@ -28,6 +28,7 @@ char fake_heap[HEAP_SIZE];
 //Global vars
 u32 Pause = 0;
 u32 Stop = 0;
+u32 destroyer = 0;
 //main Switch
 u32 music = 1;
 u32 list = 0;
@@ -80,65 +81,7 @@ void __appInit(void)
     }
 }
 
-//controls
-void wakey()
-{
-    hidScanInput();
-        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
-        u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
-		
-			//Stop
-			if (music == 1)
-			{
-				if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_B) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_B))
-				{
-				flash_led_connect();
-				music = 0;
-				list--;
-				audoutStopAudioOut();
-				Stop = 1;
-				create_flag("StarDust/music/stop");
-				audoutExit();
-				}
-			}
-			
-		//Pause unestable
-        if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_X) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_X)){
-			flash_led_connect();
-			if (music == 1)
-			{music = 0;
-			audoutStopAudioOut();
-			Pause = 1;
-			audoutExit();
-				}else{
-			music = 1;
-			audoutInitialize();
-			Pause = 0;
-			Stop = 0;
-			unlink("/StarDust/music/stop");
-			audoutStartAudioOut();
-			}
-		}
 
-		//next
-		if (music == 1){
-			if ((kDown & KEY_ZR|| kDown & KEY_R) && (kHeld & KEY_ZR && kHeld & KEY_R)){
-			flash_led_connect();
-			prevmusic = 2;
-			Stop = 1;
-			}
-		}
-
-		//prev
-		if (music == 1){
-			if ((kDown & KEY_ZL|| kDown & KEY_L) && (kHeld & KEY_ZL && kHeld & KEY_L)){
-			flash_led_connect();
-			prevmusic = 1;
-			Stop = 1;
-			}
-		}
-		
-}
 
 void Scan_folder(){
     //List Audio and rename to use
@@ -186,6 +129,77 @@ void Scan_folder(){
     closedir(dir);
 }
 
+//controls
+void wakey()
+{
+    hidScanInput();
+        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+        u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
+		
+			//Stop
+			if (music == 1)
+			{
+				if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_B) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_B))
+				{
+				flash_led_connect();
+				music = 0;
+				list--;
+				audoutStopAudioOut();
+				Stop = 1;
+				Pause = 0;
+				create_flag("StarDust/music/stop");
+				audoutExit();
+				}
+			}
+			
+		//Pause unestable
+        if ((kDown & KEY_R || kDown & KEY_L || kDown & KEY_X) && (kHeld & KEY_R && kHeld & KEY_L && kHeld & KEY_X)){
+			flash_led_connect();
+			if (music == 1)
+			{music = 0;
+			audoutStopAudioOut();
+			Pause = 1;
+			audoutExit();
+				}else{
+			music = 1;
+			audoutInitialize();
+			Pause = 0;
+			Stop = 0;
+			unlink("/StarDust/music/stop");
+			audoutStartAudioOut();
+			}
+		}
+
+		//next
+		if (music == 1){
+			if ((kDown & KEY_ZR|| kDown & KEY_R) && (kHeld & KEY_ZR && kHeld & KEY_R)){
+			flash_led_connect();
+			prevmusic = 2;
+			Stop = 1;
+			}
+		}
+
+		//prev
+		if (music == 1){
+			if ((kDown & KEY_ZL|| kDown & KEY_L) && (kHeld & KEY_ZL && kHeld & KEY_L)){
+			flash_led_connect();
+			prevmusic = 1;
+			Stop = 1;
+			}
+		}
+		
+		if (music == 0){
+			if ((kHeld & KEY_ZL && kHeld & KEY_ZR && kHeld & KEY_Y)){
+			flash_led_connect();
+			Scan_folder();
+			}
+		}
+			//kill service
+	if ((kHeld & KEY_LSTICK && kHeld & KEY_RSTICK)){Stop = 1; destroyer = 1;}
+	
+
+}
+
 int main(int argc, char **argv)
 {
     (void)argc;
@@ -201,19 +215,9 @@ unlink("/StarDust/music/pause");//just in case
 
     if (file_exist("StarDust/music/stop"))
     {
-        music = 0;
+        Stop = 1;
+		music = 0;
     }
-/*	Result rc;
-	Thread pauseThread;
-	std::thread Thread(&pauseThread, wakey, NULL, 0x4000, 49, 3);
-//	ThreadFunc entry = (ThreadFunc)0x000240000;
-//	rc = threadCreate(&pauseThread,entry , wakey, NULL, 0x4000, 49, 3);
-//    if (R_FAILED(rc))
-//        fatalLater(rc);
-    rc = threadStart(&pauseThread);
-    if (R_FAILED(rc))
-        fatalLater(rc);
-	*/
 
     while (appletMainLoop())
     {
@@ -227,7 +231,7 @@ unlink("/StarDust/music/pause");//just in case
 				flash_led_connect();
 				playMp3(filename);
 			}
-			if(prevmusic == 0)
+			if(prevmusic == 0)//check prev
 			list++;
 			else{
 				Stop = 0;
@@ -247,25 +251,8 @@ unlink("/StarDust/music/pause");//just in case
 			list = 0;
 		}
 		wakey();
-	    hidScanInput();
-        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
-        u64 kHeld = hidKeysHeld(CONTROLLER_P1_AUTO);
-		
-		if (music == 0){
-			if ((kDown & KEY_ZL || kDown & KEY_ZR || kDown & KEY_Y) && (kHeld & KEY_ZL && kHeld & KEY_ZR && kHeld & KEY_Y)){
-			flash_led_connect();
-			Scan_folder();
-			}
-		}
-/*
-	//kill service
-	if ((kDown & KEY_LSTICK || kDown & KEY_RSTICK) && (kHeld & KEY_LSTICK && kHeld & KEY_RSTICK)){
-	break;}
-
-
-//		if (pid == 0x0100000000001000){break;}
-//		if (pid == 0x420000000000000B){break;}	
-		*/
+	if(destroyer == 1) break;//take down 
+	
 	}
 
 	flash_led_connect();
